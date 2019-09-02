@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.1</Version>
+    <Description>Aspect Oriented library for .net</Description>
+    <Authors>Ming.ditts</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression></PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reflection.DispatchProxy" Version="4.5.1" />
+  </ItemGroup>
+
+</Project>
