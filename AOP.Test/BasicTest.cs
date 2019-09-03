@@ -29,7 +29,7 @@ namespace AOP.Test
 
             protected override void OnThrow(AdviceExecutionContext context, Exception exception)
             {
-
+                Counter++;      //no exception should be thrown
             }
         }
 

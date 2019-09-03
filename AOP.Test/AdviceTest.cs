@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AOP.Test
 {
-	public class AdvancedTest
+	public class AdviceTest
 	{
 		[Fact]
 		public void BasicTests()

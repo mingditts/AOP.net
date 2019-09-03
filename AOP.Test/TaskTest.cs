@@ -7,7 +7,7 @@ using Xunit;
 namespace AOP.Test
 {
     public class TaskTest
-	{
+    {
         private class MyAspect<T> : Aspect<T> where T : class
         {
             public static volatile int Counter = 0;
@@ -35,19 +35,24 @@ namespace AOP.Test
         }
 
         [Fact]
-		public void BasicTaskTest()
-		{
-			IService service = Aspect<IService>.BuildForAll(
-				new Service(),
-				new MyAspect<IService>()
-			);
+        public void BasicTaskTest()
+        {
+            IService service = Aspect<IService>.BuildForAll(
+                new Service(),
+                new MyAspect<IService>()
+            );
 
-			Task<bool> task = service.DoWorkAsync();
+            Task<bool> task = service.DoWorkAsync();
 
             task.Wait();
 
             Assert.True(task.Result);
-            //Assert.Equal(3, MyAspect<IService>.Counter);
+
+            new Task(() =>
+            {
+                Task.Delay(3000);
+                Assert.Equal(44, MyAspect<IService>.Counter);
+            }).Start();
         }
-	}
+    }
 }
