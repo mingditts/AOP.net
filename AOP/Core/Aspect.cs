@@ -1,10 +1,9 @@
-﻿using AOP.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace AOP.Helpers
+namespace AOP.Core
 {
-	public abstract class Aspect<T> where T : class
+    public abstract class Aspect<T> where T : class
 	{
 		private string _expression;
 

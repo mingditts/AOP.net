@@ -1,12 +1,13 @@
 using AOP.Core;
 using AOP.Test.Mocks;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AOP.Test
 {
-    public class BasicTest
-    {
+    public class TaskTest
+	{
         private class MyAspect<T> : Aspect<T> where T : class
         {
             public static volatile int Counter = 0;
@@ -19,7 +20,7 @@ namespace AOP.Test
             protected override AroundExecutionResult OnAround(AdviceExecutionContext context)
             {
                 Counter++;
-                return null;
+                return AroundExecutionResult.BuildForProceed();
             }
 
             protected override void OnBefore(AdviceExecutionContext context)
@@ -34,17 +35,19 @@ namespace AOP.Test
         }
 
         [Fact]
-        public void BasicCreationTest()
-        {
-            IService service = Aspect<IService>.BuildForAll(
-                new Service(),
-                new MyAspect<IService>(),
-                new MyAspect<IService>()
-            );
+		public void BasicTaskTest()
+		{
+			IService service = Aspect<IService>.BuildForAll(
+				new Service(),
+				new MyAspect<IService>()
+			);
 
-            service.DoWork();
+			Task<bool> task = service.DoWorkAsync();
 
-            Assert.Equal(6, MyAspect<IService>.Counter);
+            task.Wait();
+
+            Assert.True(task.Result);
+            //Assert.Equal(3, MyAspect<IService>.Counter);
         }
-    }
+	}
 }

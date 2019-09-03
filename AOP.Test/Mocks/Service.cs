@@ -1,4 +1,6 @@
-﻿namespace AOP.Test.Mocks
+﻿using System.Threading.Tasks;
+
+namespace AOP.Test.Mocks
 {
 	public class Service : IService
 	{
@@ -11,5 +13,10 @@
 		{
 			return true;
 		}
-	}
+
+        public Task<bool> DoWorkAsync()
+        {
+            return Task.FromResult(true);
+        }
+    }
 }
