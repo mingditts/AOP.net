@@ -1,6 +1,6 @@
 ﻿namespace AOP.Test.Helpers
 {
-	public class SystemHelper
+	public class SystemTestHelper
 	{
 		private readonly object _sync = new object();
 

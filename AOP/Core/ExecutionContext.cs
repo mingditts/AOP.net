@@ -1,6 +1,6 @@
 ﻿namespace AOP.Core
 {
-	public class AdviceExecutionContext
+	public class ExecutionContext
 	{
 		/// <summary>
 		/// Execution unique uuid

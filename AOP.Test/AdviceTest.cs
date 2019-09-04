@@ -11,7 +11,7 @@ namespace AOP.Test
 		[Fact]
 		public void BasicTests()
 		{
-			var systemHelper = new SystemHelper();
+			var systemHelper = new SystemTestHelper();
 
 			long tbefore = 0, taround = 0, tafter = 0;
 
@@ -20,20 +20,20 @@ namespace AOP.Test
 			IService service = Advice<IService>.Build(
 				new Service(),
 				null,
-				(AdviceExecutionContext context) =>
+				(ExecutionContext context) =>
 				{
 					tbefore = systemHelper.GetTicks();
 				},
-				(AdviceExecutionContext context) =>
+				(ExecutionContext context) =>
 				{
 					taround = systemHelper.GetTicks();
 					return AroundExecutionResult.BuildForProceed();
 				},
-				(AdviceExecutionContext context, object result) =>
+				(ExecutionContext context, object result) =>
 				{
 					tafter = systemHelper.GetTicks();
 				},
-				(AdviceExecutionContext context, Exception exception) =>
+				(ExecutionContext context, Exception exception) =>
 				{
 					exceptionRaised = true;
 				}
@@ -67,20 +67,20 @@ namespace AOP.Test
 			IService service = Advice<IService>.Build(
 				new Service(),
 				null,
-				(AdviceExecutionContext context) =>
+				(ExecutionContext context) =>
 				{
 					berforeCalled = true;
 				},
-				(AdviceExecutionContext context) =>
+				(ExecutionContext context) =>
 				{
 					aroundCalled = true;
 					return AroundExecutionResult.BuildForOverwrite(true);
 				},
-				(AdviceExecutionContext context, object result) =>
+				(ExecutionContext context, object result) =>
 				{
 					afterCalled = true;
 				},
-				(AdviceExecutionContext context, Exception exception) =>
+				(ExecutionContext context, Exception exception) =>
 				{
 					throwCalled = true;
 				}
@@ -105,7 +105,7 @@ namespace AOP.Test
 			IService service = Advice<IService>.Build(
 				new Service(),
 				null,
-				(AdviceExecutionContext context) =>
+				(ExecutionContext context) =>
 				{
 					advice1BeforeCalled = true;
 				},
@@ -117,7 +117,7 @@ namespace AOP.Test
 			service = Advice<IService>.Build(
 				service,        //Important: reuse the proxy
 				null,
-				(AdviceExecutionContext context) =>
+				(ExecutionContext context) =>
 				{
 					advice2BeforeCalled = true;
 				},

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AOP.Core
 {
-    public abstract class Aspect<T> where T : class
+	public abstract class Aspect<T> where T : class
 	{
 		private string _expression;
 
@@ -12,6 +12,15 @@ namespace AOP.Core
 
 		}
 
+		/// <summary>
+		/// Aspect
+		/// </summary>
+		/// <param name="expression">
+		/// The expression filters the execution on a subset of joinpoints.
+		/// Null means on all methods and properties execution.
+		/// If it's not null the pattern is 'properties|method:methodNameRegExp'.
+		/// Example: expression = "methods:Build*" means all the method only that starts with Build.
+		/// </param>
 		public Aspect(string expression)
 		{
 			this._expression = expression;
@@ -21,28 +30,28 @@ namespace AOP.Core
 		/// On before
 		/// </summary>
 		/// <param name="context"></param>
-		protected abstract void OnBefore(AdviceExecutionContext context);
+		protected abstract void OnBefore(ExecutionContext context);
 
 		/// <summary>
 		/// On around
 		/// </summary>
 		/// <param name="context"></param>
 		/// <returns></returns>
-		protected abstract AroundExecutionResult OnAround(AdviceExecutionContext context);
+		protected abstract AroundExecutionResult OnAround(ExecutionContext context);
 
 		/// <summary>
 		/// On after
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="result"></param>
-		protected abstract void OnAfter(AdviceExecutionContext context, object result);
+		protected abstract void OnAfter(ExecutionContext context, object result);
 
 		/// <summary>
 		/// On throw
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="exception"></param>
-		protected abstract void OnThrow(AdviceExecutionContext context, Exception exception);
+		protected abstract void OnThrow(ExecutionContext context, Exception exception);
 
 		/// <summary>
 		/// Build for all
@@ -58,10 +67,10 @@ namespace AOP.Core
 		{
 			return Advice<T>.Build(target,
 				this._expression,
-				before == true ? this.OnBefore : (Action<AdviceExecutionContext>)null,
-				around == true ? this.OnAround : (Func<AdviceExecutionContext, AroundExecutionResult>)null,
-				after == true ? this.OnAfter : (Action<AdviceExecutionContext, object>)null,
-				thrown == true ? this.OnThrow : (Action<AdviceExecutionContext, Exception>)null
+				before == true ? this.OnBefore : (Action<ExecutionContext>)null,
+				around == true ? this.OnAround : (Func<ExecutionContext, AroundExecutionResult>)null,
+				after == true ? this.OnAfter : (Action<ExecutionContext, object>)null,
+				thrown == true ? this.OnThrow : (Action<ExecutionContext, Exception>)null
 			);
 		}
 
