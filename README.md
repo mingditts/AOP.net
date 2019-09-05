@@ -16,18 +16,9 @@ private class MyAspect<T> : Aspect<T>, IBeforeAdvice, IAroundAdvice, IAfterAdvic
 	public bool OnAfterReached = false;
 	public bool OnThrowReached = false;
 
-	private bool _proceed = true;
-	private object _overwrittenResult = null;
-
 	public MyAspect()
 	{
 
-	}
-
-	public MyAspect(bool proceed, object overwrittenResult)
-	{
-		this._proceed = proceed;
-		this._overwrittenResult = overwrittenResult;
 	}
 
 	public void OnBefore(ExecutionContext context)
@@ -40,8 +31,8 @@ private class MyAspect<T> : Aspect<T>, IBeforeAdvice, IAroundAdvice, IAfterAdvic
 		this.OnAroundReached = true;
 		return new AroundExecutionResult
 		{
-			Proceed = this._proceed,
-			OverwrittenResult = this._overwrittenResult
+			Proceed = true,
+			OverwrittenResult = null
 		};
 	}
 
