@@ -1,7 +1,6 @@
 # AOP
 
 AOP is a library for use the Aspect Oriented approach in a .net project.
-It's work in progress.
 
 Usage:
 ```
