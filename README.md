@@ -11,11 +11,6 @@ Usage:
 /// <typeparam name="T"></typeparam>
 private class MyAspect<T> : Aspect<T>, IBeforeAdvice, IAroundAdvice, IAfterAdvice, IAfterThrowAdvice where T : class
 {
-	public bool OnBeforeReached = false;
-	public bool OnAroundReached = false;
-	public bool OnAfterReached = false;
-	public bool OnThrowReached = false;
-
 	public MyAspect()
 	{
 
@@ -23,12 +18,13 @@ private class MyAspect<T> : Aspect<T>, IBeforeAdvice, IAroundAdvice, IAfterAdvic
 
 	public void OnBefore(ExecutionContext context)
 	{
-		this.OnBeforeReached = true;
+		//code executed before
 	}
 
 	public AroundExecutionResult OnAround(ExecutionContext context)
 	{
-		this.OnAroundReached = true;
+		//code executed around
+		
 		return new AroundExecutionResult
 		{
 			Proceed = true,
@@ -38,12 +34,12 @@ private class MyAspect<T> : Aspect<T>, IBeforeAdvice, IAroundAdvice, IAfterAdvic
 
 	public void OnAfter(ExecutionContext context, object result)
 	{
-		this.OnAfterReached = true;
+		//code executed after
 	}
 
 	public void OnThrow(ExecutionContext context, Exception exception)
 	{
-		this.OnThrowReached = true;
+		//code executed on exception throw
 	}
 }
 
