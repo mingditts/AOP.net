@@ -11,22 +11,22 @@ Usage:
 /// <typeparam name="T"></typeparam>
 private class MyAspect<T> : Aspect<T> where T : class
 {
-    protected override void OnAfter(AdviceExecutionContext context, object result)
+    protected override void OnAfter(ExecutionContext context, object result)
     {
 				
     }
 
-    protected override AroundExecutionResult OnAround(AdviceExecutionContext context)
+    protected override AroundExecutionResult OnAround(ExecutionContext context)
     {
         return new AroundExecutionResult { Proceed = true };
     }
 
-    protected override void OnBefore(AdviceExecutionContext context)
+    protected override void OnBefore(ExecutionContext context)
     {
 				
     }
 
-    protected override void OnThrow(AdviceExecutionContext context, Exception exception)
+    protected override void OnThrow(ExecutionContext context, Exception exception)
     {
 
     }
