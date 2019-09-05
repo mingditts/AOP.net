@@ -1,6 +1,6 @@
-# AOP.net
+# AOP
 
-AOP.net is a library for use the Aspect Oriented approach in a .net project.
+AOP is a library for use the Aspect Oriented approach in a .net project.
 It's work in progress.
 
 Usage:
@@ -9,27 +9,51 @@ Usage:
 /// Your aspect
 /// </summary>
 /// <typeparam name="T"></typeparam>
-private class MyAspect<T> : Aspect<T> where T : class
+private class MyAspect<T> : Aspect<T>, IBeforeAdvice, IAroundAdvice, IAfterAdvice, IAfterThrowAdvice where T : class
 {
-    protected override void OnAfter(ExecutionContext context, object result)
-    {
-				
-    }
+	public bool OnBeforeReached = false;
+	public bool OnAroundReached = false;
+	public bool OnAfterReached = false;
+	public bool OnThrowReached = false;
 
-    protected override AroundExecutionResult OnAround(ExecutionContext context)
-    {
-        return new AroundExecutionResult { Proceed = true };
-    }
+	private bool _proceed = true;
+	private object _overwrittenResult = null;
 
-    protected override void OnBefore(ExecutionContext context)
-    {
-				
-    }
+	public MyAspect()
+	{
 
-    protected override void OnThrow(ExecutionContext context, Exception exception)
-    {
+	}
 
-    }
+	public MyAspect(bool proceed, object overwrittenResult)
+	{
+		this._proceed = proceed;
+		this._overwrittenResult = overwrittenResult;
+	}
+
+	public void OnBefore(ExecutionContext context)
+	{
+		this.OnBeforeReached = true;
+	}
+
+	public AroundExecutionResult OnAround(ExecutionContext context)
+	{
+		this.OnAroundReached = true;
+		return new AroundExecutionResult
+		{
+			Proceed = this._proceed,
+			OverwrittenResult = this._overwrittenResult
+		};
+	}
+
+	public void OnAfter(ExecutionContext context, object result)
+	{
+		this.OnAfterReached = true;
+	}
+
+	public void OnThrow(ExecutionContext context, Exception exception)
+	{
+		this.OnThrowReached = true;
+	}
 }
 
 //IService and Service are your object/service class to observe/control
@@ -48,8 +72,8 @@ service.DoWork();
 
 ### Todos
 
- - Test coverage
- - Manage task execution
+  - Test coverage
+  - Manage task execution
 
 ### License
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AOP.Core
 {
-	public class Advice<T> : DispatchProxy where T : class
+	public class AdviceProxy<T> : DispatchProxy where T : class
 	{
 		#region Private Classes
 
@@ -29,13 +29,16 @@ namespace AOP.Core
 		private Action<ExecutionContext, object> _after;
 		private Action<ExecutionContext, Exception> _throw;
 
-		public Advice()
+		/// <summary>
+		/// Advice proxy
+		/// </summary>
+		public AdviceProxy()
 		{
 
 		}
 
 		/// <summary>
-		/// Advice
+		/// Advice proxy
 		/// </summary>
 		/// <param name="target"></param>
 		/// <param name="expression">
@@ -47,7 +50,7 @@ namespace AOP.Core
 		/// <param name="around"></param>
 		/// <param name="after"></param>
 		/// <param name="throwm"></param>
-		public Advice(T target,
+		public AdviceProxy(T target,
 			string expression,
 			Action<ExecutionContext> before,
 			Func<ExecutionContext, AroundExecutionResult> around,
@@ -98,9 +101,9 @@ namespace AOP.Core
 			Action<ExecutionContext, object> after,
 			Action<ExecutionContext, Exception> throwm)
 		{
-			object proxy = Create<T, Advice<T>>();
+			object proxy = Create<T, AdviceProxy<T>>();
 
-			((Advice<T>)proxy).SetTarget(target, expression, before, around, after, throwm);
+			((AdviceProxy<T>)proxy).SetTarget(target, expression, before, around, after, throwm);
 
 			return (T)proxy;
 		}

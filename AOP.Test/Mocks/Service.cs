@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace AOP.Test.Mocks
 {
@@ -14,9 +15,14 @@ namespace AOP.Test.Mocks
 			return true;
 		}
 
-        public Task<bool> DoWorkAsync()
-        {
-            return Task.FromResult(true);
-        }
-    }
+		public Task<bool> DoWorkAsync()
+		{
+			return Task.FromResult(true);
+		}
+
+		public void ThrowException()
+		{
+			throw new Exception();
+		}
+	}
 }
