@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net46</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Description>Aspect Oriented library for .net</Description>
     <Authors>Ming.ditts</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -11,9 +11,11 @@
     <PackageProjectUrl>https://github.com/mingditts/AOP.net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mingditts/AOP.net</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <PackageTags>AOP</PackageTags>
+    <PackageTags>AOP aspect</PackageTags>
     <PackageId>AOP</PackageId>
     <Product>AOP</Product>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.1.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
