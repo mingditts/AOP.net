@@ -115,7 +115,7 @@ namespace AOP.Core
 		/// <returns></returns>
 		private ExecutionFilter ExtractExecutionFilter(string info)
 		{
-			if (string.IsNullOrEmpty(info))
+			if (string.IsNullOrEmpty(info) || "*".Equals(info) || "*:*".Equals(info))
 			{
 				return new ExecutionFilter { IncludeMethods = true, IncludeProperties = true, Pattern = "*" };
 			}
@@ -131,19 +131,31 @@ namespace AOP.Core
 				return new ExecutionFilter { IncludeMethods = true, IncludeProperties = true, Pattern = "*" };
 			}
 
-			if (parts.Length == 0)
+			if (parts.Length == 1)
 			{
-				includeMethods = true;
-				includeProperties = true;
+				if (info.Contains("|") || "methods".Equals(info) || "properties".Equals(info))
+				{
+					string[] typeParts = info.Contains("|") ? parts[0].Split('|') : new string[] { info };
 
-				pattern = "*";
-			}
-			else if (parts.Length == 1)
-			{
-				includeMethods = true;
-				includeProperties = true;
+					includeMethods = typeParts != null && typeParts.Contains("methods");
+					includeProperties = typeParts != null && typeParts.Contains("properties");
 
-				pattern = parts[0];
+					pattern = "*";
+				}
+				else
+				{
+					includeMethods = true;
+					includeProperties = true;
+
+					pattern = parts[0];
+
+					if ("".Equals(pattern))
+					{
+						pattern = "*";
+					}
+				}
+
+				return new ExecutionFilter { IncludeMethods = includeMethods, IncludeProperties = includeProperties, Pattern = pattern };
 			}
 			else if (parts.Length == 2)
 			{
@@ -153,9 +165,16 @@ namespace AOP.Core
 				includeProperties = typeParts != null && typeParts.Contains("properties");
 
 				pattern = parts[1];
+
+				if ("".Equals(pattern))
+				{
+					pattern = "*";
+				}
+
+				return new ExecutionFilter { IncludeMethods = includeMethods, IncludeProperties = includeProperties, Pattern = pattern };
 			}
 
-			return new ExecutionFilter { IncludeMethods = includeMethods, IncludeProperties = includeProperties, Pattern = pattern };
+			throw new FormatException("The expression " + info + " is not well formed! The expression string must be like 'methods|properties:Get*' or '*:*'");
 		}
 
 		/// <summary>
@@ -189,32 +208,13 @@ namespace AOP.Core
 
 			if (this.EvaluateExecution(targetMethod, this.ExtractExecutionFilter(this._expression)) != true)
 			{
-				var result = typeof(T).InvokeMember(
+				return typeof(T).InvokeMember(
 					targetMethod.Name,
 					BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance,
 					null,
 					this._target,
 					args
 				);
-
-				if (result is Task)
-				{
-					((Task)result).ContinueWith(task =>
-					{
-						if (task.Exception != null)
-						{
-							throw task.Exception;
-						}
-						else
-						{
-							return TaskHelper.GetTaskResult(task);
-						}
-					});
-				}
-				else
-				{
-					return result;
-				}
 			}
 
 			#endregion
