@@ -4,11 +4,21 @@ AOP is a library for use the Aspect Oriented approach in a .net project.
 
 Usage:
 ```
+interface IService {
+	void DoWork();
+}
+
+class Service : IService {
+	public void DoWork() {
+		Console.WriteLine("Do work ...");
+	}
+}
+
 /// <summary>
 /// Your aspect
 /// </summary>
 /// <typeparam name="T"></typeparam>
-private class MyAspect<T> : Aspect<T>, IBeforeAdvice, IAroundAdvice, IAfterAdvice, IAfterThrowAdvice where T : class
+class MyAspect<T> : Aspect<T>, IBeforeAdvice, IAroundAdvice, IAfterAdvice, IAfterThrowAdvice where T : class
 {
 	public MyAspect()
 	{
