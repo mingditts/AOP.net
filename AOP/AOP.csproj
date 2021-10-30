@@ -1,25 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<Description>Aspect Oriented library for .net</Description>
+		<Authors>Ming.Ditts</Authors>
+		<Version>1.1.0</Version>
+		<PackageReleaseNotes>Release for .netstandard 2.0.</PackageReleaseNotes>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>Ming.ditts</Authors>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression></PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/mingditts/AOP.net</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/mingditts/AOP.net</RepositoryUrl>
+		<RepositoryType>GitHub</RepositoryType>
+		<PackageTags>AOP aspect</PackageTags>
+		<PackageId>AOP</PackageId>
+		<Product>AOP</Product>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.2</Version>
-    <Description>Aspect Oriented library for .net</Description>
-    <Authors>Ming.ditts</Authors>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseExpression></PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/mingditts/AOP.net</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/mingditts/AOP.net</RepositoryUrl>
-    <RepositoryType>GitHub</RepositoryType>
-    <PackageTags>AOP aspect</PackageTags>
-    <PackageId>AOP</PackageId>
-    <Product>AOP</Product>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
-  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="System.Reflection.DispatchProxy" Version="4.7.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Reflection.DispatchProxy" Version="4.5.1" />
-  </ItemGroup>
-
+	<ItemGroup>
+	  <None Include="..\LICENSE">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	</ItemGroup>
 </Project>
