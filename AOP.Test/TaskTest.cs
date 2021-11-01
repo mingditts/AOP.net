@@ -1,6 +1,8 @@
 using AOP.Core;
+using AOP.Test.Helpers;
 using AOP.Test.Mocks;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AOP.Test
@@ -44,12 +46,26 @@ namespace AOP.Test
 			bool methodResult = await service.DoWorkAsync();
 
 			Assert.True(methodResult);
+			Assert.Equal(3, MyAspect<IService>.Counter);
+		}
 
-			//TaskTestHelper.StartAndHandleAssertion(() =>
-			//{
-			//	Task.Delay(3000);
-			//	Assert.Equal(3, MyAspect<IService>.Counter);
-			//});
+		[Fact]
+		public async void BasicTaskTest2()
+		{
+			IService service = Aspect<IService>.Build(
+				new Service(),
+				new MyAspect<IService>()
+			);
+
+			Task<bool> methodResultTask = service.DoWorkAsync();
+
+			TaskTestHelper.StartAndHandleAssertion(() =>
+			{
+				Task.Delay(3000);
+
+				Assert.True(methodResultTask.Result);
+				Assert.Equal(3, MyAspect<IService>.Counter);
+			});
 		}
 	}
 }

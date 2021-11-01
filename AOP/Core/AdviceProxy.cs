@@ -168,8 +168,8 @@ namespace AOP.Core
 				{
 					string[] typeParts = parts[0].Trim().Split('|');
 
-				includeMethods = typeParts != null && typeParts.Contains("methods");
-				includeProperties = typeParts != null && typeParts.Contains("properties");
+					includeMethods = typeParts != null && typeParts.Contains("methods");
+					includeProperties = typeParts != null && typeParts.Contains("properties");
 				}
 
 				pattern = parts[1];
@@ -275,35 +275,36 @@ namespace AOP.Core
 
 				if (result is Task)
 				{
-					((Task)result).ContinueWith(task =>
+					((Task)result).Wait();
+
+					Task task = result as Task; 
+
+					if (task.Exception != null)
 					{
-						if (task.Exception != null)
+						this._throw.Invoke(executionContext, task.Exception);
+					}
+					else
+					{
+						object taskResult = TaskHelper.GetTaskResult(task);
+
+						executionContext.EndTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+						#region After
+
+						if (this._after != null)
 						{
-							this._throw.Invoke(executionContext, task.Exception);
-						}
-						else
-						{
-							object taskResult = TaskHelper.GetTaskResult(task);
-
-							executionContext.EndTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
-							#region After
-
-							if (this._after != null)
+							try
 							{
-								try
-								{
-									this._after.Invoke(executionContext, taskResult);
-								}
-								catch
-								{
-
-								}
+								this._after.Invoke(executionContext, taskResult);
 							}
+							catch
+							{
 
-							#endregion
+							}
 						}
-					});
+
+						#endregion
+					}
 				}
 				else
 				{
