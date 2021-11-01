@@ -36,6 +36,7 @@ namespace AOP.Test
 			public AroundExecutionResult OnAround(ExecutionContext context)
 			{
 				this.OnAroundReached = true;
+
 				return new AroundExecutionResult
 				{
 					Proceed = this._proceed,
@@ -126,6 +127,24 @@ namespace AOP.Test
 			Assert.False(aspect0.OnThrowReached);
 
 			Assert.False(result);
+		}
+
+		[Fact]
+		public void BasicPropertyTest()
+		{
+			var aspect0 = new MyAspect<IService>();
+
+			IService service = Aspect<IService>.Build(
+				new Service(),
+				aspect0
+			);
+
+			service.Property1 = true;
+
+			Assert.True(aspect0.OnBeforeReached);
+			Assert.True(aspect0.OnAroundReached);
+			Assert.True(aspect0.OnAfterReached);
+			Assert.False(aspect0.OnThrowReached);
 		}
 	}
 }

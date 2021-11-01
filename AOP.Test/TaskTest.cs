@@ -1,6 +1,8 @@
 using AOP.Core;
+using AOP.Test.Helpers;
 using AOP.Test.Mocks;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AOP.Test
@@ -9,7 +11,7 @@ namespace AOP.Test
 	{
 		private class MyAspect<T> : Aspect<T>, IBeforeAdvice, IAroundAdvice, IAfterAdvice, IAfterThrowAdvice where T : class
 		{
-			public static volatile int Counter = 0;
+			public volatile int Counter = 0;
 
 			public void OnAfter(ExecutionContext context, object result)
 			{
@@ -36,20 +38,38 @@ namespace AOP.Test
 		[Fact]
 		public async void BasicTaskTest()
 		{
+			var myAspect = new MyAspect<IService>();
+
 			IService service = Aspect<IService>.Build(
 				new Service(),
-				new MyAspect<IService>()
+				myAspect
 			);
 
 			bool methodResult = await service.DoWorkAsync();
 
 			Assert.True(methodResult);
+			Assert.Equal(3, myAspect.Counter);
+		}
 
-			//TaskTestHelper.StartAndHandleAssertion(() =>
-			//{
-			//	Task.Delay(3000);
-			//	Assert.Equal(3, MyAspect<IService>.Counter);
-			//});
+		[Fact]
+		public async void BasicTaskTest2()
+		{
+			var myAspect = new MyAspect<IService>();
+
+			IService service = Aspect<IService>.Build(
+				new Service(),
+				myAspect
+			);
+
+			Task<bool> methodResultTask = service.DoWorkAsync();
+
+			TaskTestHelper.StartAndHandleAssertion(() =>
+			{
+				Task.Delay(3000);
+
+				Assert.True(methodResultTask.Result);
+				Assert.Equal(3, myAspect.Counter);
+			});
 		}
 	}
 }
