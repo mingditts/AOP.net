@@ -11,7 +11,7 @@ namespace AOP.Core
 	{
 		#region Private Classes
 
-		private class ExecutionFilter
+		internal class ExecutionFilter
 		{
 			public bool IncludeMethods { get; set; }
 
@@ -113,16 +113,12 @@ namespace AOP.Core
 		/// </summary>
 		/// <param name="info"></param>
 		/// <returns></returns>
-		private ExecutionFilter ExtractExecutionFilter(string info)
+		internal ExecutionFilter ExtractExecutionFilter(string info)
 		{
 			if (string.IsNullOrEmpty(info) || "*".Equals(info) || "*:*".Equals(info))
 			{
 				return new ExecutionFilter { IncludeMethods = true, IncludeProperties = true, Pattern = "*" };
 			}
-
-			bool includeMethods = false;
-			bool includeProperties = false;
-			string pattern = "*";
 
 			string[] parts = info.Split(':');
 
@@ -131,11 +127,15 @@ namespace AOP.Core
 				return new ExecutionFilter { IncludeMethods = true, IncludeProperties = true, Pattern = "*" };
 			}
 
+			bool includeMethods = false;
+			bool includeProperties = false;
+			string pattern = "*";
+
 			if (parts.Length == 1)
 			{
 				if (info.Contains("|") || "methods".Equals(info) || "properties".Equals(info))
 				{
-					string[] typeParts = info.Contains("|") ? parts[0].Split('|') : new string[] { info };
+					string[] typeParts = info.Contains("|") ? parts[0].Trim().Split('|') : new string[] { info };
 
 					includeMethods = typeParts != null && typeParts.Contains("methods");
 					includeProperties = typeParts != null && typeParts.Contains("properties");
@@ -159,10 +159,18 @@ namespace AOP.Core
 			}
 			else if (parts.Length == 2)
 			{
-				string[] typeParts = parts[0].Split('|');
+				if ("*".Equals(parts[0].Trim()))
+				{
+					includeMethods = true;
+					includeProperties = true;
+				}
+				else
+				{
+					string[] typeParts = parts[0].Trim().Split('|');
 
 				includeMethods = typeParts != null && typeParts.Contains("methods");
 				includeProperties = typeParts != null && typeParts.Contains("properties");
+				}
 
 				pattern = parts[1];
 
@@ -183,7 +191,7 @@ namespace AOP.Core
 		/// <param name="targetMethod"></param>
 		/// <param name="filter"></param>
 		/// <returns></returns>
-		private bool EvaluateExecution(MethodInfo targetMethod, ExecutionFilter filter)
+		internal bool EvaluateExecution(MethodInfo targetMethod, ExecutionFilter filter)
 		{
 			if ("*".Equals(filter.Pattern) || Regex.IsMatch(targetMethod.Name, filter.Pattern))
 			{
