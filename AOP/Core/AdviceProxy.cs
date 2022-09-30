@@ -234,6 +234,11 @@ namespace AOP.Core
 				executionContext.Args = args;
 				executionContext.Uid = Guid.NewGuid().ToString();
 				executionContext.StartTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+				executionContext.IsPublic = targetMethod.IsPublic;
+				executionContext.IsAbstract = targetMethod.IsAbstract;
+				executionContext.IsPrivate = targetMethod.IsPrivate;
+				executionContext.IsVirtual = targetMethod.IsVirtual;
+				executionContext.MemberName = targetMethod.Name;
 
 				#region Before
 
@@ -277,7 +282,7 @@ namespace AOP.Core
 				{
 					((Task)result).Wait();
 
-					Task task = result as Task; 
+					Task task = result as Task;
 
 					if (task.Exception != null)
 					{
