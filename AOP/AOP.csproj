@@ -3,7 +3,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Description>Aspect Oriented library for .net</Description>
 		<Authors>Ming.Ditts</Authors>
-		<Version>1.1.1</Version>
+		<Version>1.1.2</Version>
 		<PackageReleaseNotes>Release for .netstandard 2.0.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>Ming.ditts</Authors>
