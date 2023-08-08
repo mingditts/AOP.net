@@ -90,15 +90,15 @@ namespace AOP.Test
 				aspect0
 			);
 
-			bool externalException = false;
+			Exception externalException = null;
 
 			try
 			{
 				service.ThrowException();
 			}
-			catch
+			catch (Exception err)
 			{
-				externalException = true;
+				externalException = err;
 			}
 
 			Assert.True(aspect0.OnBeforeReached);
@@ -106,8 +106,9 @@ namespace AOP.Test
 			Assert.False(aspect0.OnAfterReached);
 			Assert.True(aspect0.OnThrowReached);
 
-			Assert.True(externalException);
-		}
+			Assert.True(externalException != null);
+			Assert.True(externalException.Message.Equals("service exception"));
+        }
 
 		[Fact]
 		public void AroundTest()

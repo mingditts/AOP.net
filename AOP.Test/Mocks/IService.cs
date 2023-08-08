@@ -36,6 +36,5 @@ namespace AOP.Test.Mocks
 		/// Throw exception
 		/// </summary>
 		void ThrowException();
-
 	}
 }

@@ -31,7 +31,7 @@ namespace AOP.Test.Mocks
 
 		public void ThrowException()
 		{
-			throw new Exception();
+			throw new Exception("service exception");
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -341,8 +342,9 @@ namespace AOP.Core
 					this._throw.Invoke(executionContext, ex.InnerException ?? ex);
 				}
 
-				return Activator.CreateInstance(targetMethod.ReturnType);       //check this
-			}
+                ExceptionDispatchInfo.Capture(ex.InnerException ?? ex).Throw();
+				throw;
+            }
 		}
 	}
 }
